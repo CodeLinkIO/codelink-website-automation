@@ -1,0 +1,19 @@
+<suite name="Peregrine Test" parallel="false">
+    <!-- Global parameter	-->
+    <parameter name="environmentName" value="STAGING"/>
+    <parameter name="browser" value="chrome"/>
+
+    <listeners>
+        <listener class-name="core.reportConfig.ExtentTestListener"/>
+    </listeners>
+
+    <test name="Contact Us Flow">
+        <classes>
+            <class name="core.testcases.ContactUsTest"/>
+            <methods>
+                <include name="Contact_Us_Flow_With_Embedded_Team"/>
+            </methods>
+        </classes>
+    </test>
+
+</suite>
