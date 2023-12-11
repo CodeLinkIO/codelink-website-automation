@@ -1,9 +1,9 @@
-package core.reportConfig;
+package reportConfig;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
-import core.actions.common.GlobalConstants;
+import common.GlobalConstants;
 
 public class ExtentManager {
     static final ExtentReports extentReports = new ExtentReports();

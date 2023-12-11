@@ -1,8 +1,9 @@
-package core.pageObjects;
+package pageObjects;
 
-import core.actions.common.BasePage;
-import core.interfaces.HomePageUI;
+import common.BasePage;
+import interfaces.HomePageUI;
 import org.openqa.selenium.WebDriver;
+import pageObjects.ContactUsPage;
 
 public class HomePage extends BasePage {
     WebDriver driver;

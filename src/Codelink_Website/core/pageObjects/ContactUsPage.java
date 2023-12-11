@@ -1,7 +1,7 @@
-package core.pageObjects;
+package pageObjects;
 
-import core.actions.common.BasePage;
-import core.interfaces.ContactUsUI;
+import common.BasePage;
+import interfaces.ContactUsUI;
 import org.openqa.selenium.WebDriver;
 
 public class ContactUsPage extends BasePage {

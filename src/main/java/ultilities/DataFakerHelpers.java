@@ -1,4 +1,4 @@
-package core.actions.ultilities;
+package ultilities;
 
 import net.datafaker.Faker;
 

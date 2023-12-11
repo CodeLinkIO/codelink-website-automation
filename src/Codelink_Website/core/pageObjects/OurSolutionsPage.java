@@ -1,7 +1,7 @@
-package core.pageObjects;
+package pageObjects;
 
-import core.actions.common.BasePage;
-import core.interfaces.OurSolutionUI;
+import common.BasePage;
+import interfaces.OurSolutionUI;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

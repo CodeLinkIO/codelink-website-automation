@@ -1,6 +1,6 @@
-package core.pageObjects;
+package pageObjects;
 
-import core.actions.common.BasePage;
+import common.BasePage;
 
 public class SubscribePage extends BasePage {
 }

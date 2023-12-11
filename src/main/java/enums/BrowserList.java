@@ -1,4 +1,4 @@
-package core.actions.enums;
+package enums;
 
 public enum BrowserList {
     CHROME, EDGE, FIREFOX

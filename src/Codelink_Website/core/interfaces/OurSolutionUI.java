@@ -1,4 +1,4 @@
-package core.interfaces;
+package interfaces;
 
 public class OurSolutionUI {
     public static final String DYNAMIC_BUTTON_BY_NAME="xpath=//span[text()='%s']";

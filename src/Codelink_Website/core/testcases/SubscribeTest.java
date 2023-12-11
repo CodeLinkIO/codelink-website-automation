@@ -1,6 +1,6 @@
-package core.testcases;
+package testcases;
 
-import core.actions.common.BaseTest;
+import common.BaseTest;
 
 public class SubscribeTest extends BaseTest {
 }

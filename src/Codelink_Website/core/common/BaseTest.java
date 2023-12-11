@@ -1,8 +1,8 @@
-package core.actions.common;
+package common;
 
-import core.actions.enums.BrowserList;
-import core.actions.enums.EnvironmentList;
-import core.actions.ultilities.log;
+import enums.BrowserList;
+import enums.EnvironmentList;
+import ultilities.log;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;

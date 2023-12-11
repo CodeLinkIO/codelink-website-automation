@@ -1,11 +1,11 @@
-package core.actions.ultilities;
+package ultilities;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class log {
     //Initialize log4j instance
-    private static final Logger log =  LogManager.getLogger(core.actions.ultilities.log.class);
+    private static final Logger log =  LogManager.getLogger(ultilities.log.class);
 
     //Info Level logs
     public static void info (String message) {

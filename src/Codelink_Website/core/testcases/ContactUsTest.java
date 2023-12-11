@@ -1,11 +1,11 @@
-package core.testcases;
+package testcases;
 
-import core.actions.common.BaseTest;
-import core.actions.ultilities.DataFakerHelpers;
-import core.pageObjects.ContactUsPage;
-import core.pageObjects.HomePage;
-import core.pageObjects.OurSolutionsPage;
-import core.reportConfig.ExtentTestManager;
+import common.BaseTest;
+import ultilities.DataFakerHelpers;
+import pageObjects.ContactUsPage;
+import pageObjects.HomePage;
+import pageObjects.OurSolutionsPage;
+import reportConfig.ExtentTestManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
 
 import java.lang.reflect.Method;
 
-import static core.reportConfig.ExtentTestManager.logInfo;
+import static reportConfig.ExtentTestManager.logInfo;
 
 public class ContactUsTest extends BaseTest {
     WebDriver driver;

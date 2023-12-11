@@ -1,9 +1,9 @@
-package core.reportConfig;
+package reportConfig;
 
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.markuputils.ExtentColor;
 import com.aventstack.extentreports.markuputils.MarkupHelper;
-import core.actions.common.BaseTest;
+import common.BaseTest;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +11,8 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import static core.reportConfig.ExtentTestManager.getTest;
+import static reportConfig.ExtentTestManager.getTest;
+
 
 public class ExtentTestListener extends BaseTest implements ITestListener {
 

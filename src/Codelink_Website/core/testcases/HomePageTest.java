@@ -1,6 +1,7 @@
-package core.testcases;
+package testcases;
 
-import core.actions.common.BaseTest;
+
+import common.BaseTest;
 
 public class HomePageTest extends BaseTest {
 }
