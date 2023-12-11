@@ -96,6 +96,12 @@ public class ContactUsTest extends BaseTest {
         Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
     }
 
+    @Test
+    public void Contact_Us_Flow_With_Message(){
+        
+    }
+    // Merge Request Test
+
     @AfterClass(alwaysRun = true)
     public void afterClass(){
         closeBrowserDriver();
