@@ -1,4 +1,6 @@
-<suite name="Peregrine Test" parallel="false">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Peregrine Test" parallel="none">
     <!-- Global parameter	-->
     <parameter name="environmentName" value="STAGING"/>
     <parameter name="browser" value="chrome"/>
@@ -7,12 +9,13 @@
         <listener class-name="reportConfig.ExtentTestListener"/>
     </listeners>
 
-    <test name="Contact Us Flow Test">
+    <test name="Contact Us Flow">
         <classes>
-            <class name="testcases.ContactUsTest"/>
-            <methods>
-                <include name="Contact_Us_Flow_With_Embedded_Team"/>
-            </methods>
+            <class name="testcases.ContactUsTest">
+                <methods>
+                    <include name="Contact_Us_Flow_With_Embedded_Team" />
+                </methods>
+            </class>
         </classes>
     </test>
 
