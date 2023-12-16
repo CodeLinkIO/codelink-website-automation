@@ -269,4 +269,16 @@ public class GMail {
 
     }
 
+    /*
+    * run main() to get authorize (1st time)
+    * */
+//    public static void main(String[] args) throws IOException, GeneralSecurityException {
+//        String body = getEmailBody("qa@codelink.io","Testing");
+//        System.out.println("Final Body: " + body);
+//        String link = getEmailLink("qa@codelink.io","Testing");
+//        System.out.println("Final Body: " + link);
+//        System.out.println("Total mail(s):" + getTotalCountOfMails());
+//        System.out.println("Is mail exist: " + isMailExist("Testing"));
+//    }
+
 }
