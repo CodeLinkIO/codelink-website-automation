@@ -15,9 +15,11 @@ import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.ListMessagesResponse;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.Thread;
+import common.GlobalConstants;
 import io.restassured.path.json.JsonPath;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -31,14 +33,14 @@ public class GMail {
 
     private static final List<String> SCOPES = Collections.singletonList(GmailScopes.MAIL_GOOGLE_COM);
     private static final String CREDENTIALS_FILE_PATH =
-            System.getProperty("user.dir") +
+            GlobalConstants.PROJECT_PATH +
                     File.separator + "src" +
                     File.separator + "main" +
                     File.separator + "resources" +
                     File.separator + "credentials" +
                     File.separator + "credentials_new.json";
 
-    private static final String TOKENS_DIRECTORY_PATH = System.getProperty("user.dir") +
+    private static final String TOKENS_DIRECTORY_PATH = GlobalConstants.PROJECT_PATH +
             File.separator + "src" +
             File.separator + "main" +
             File.separator + "resources" +
@@ -59,16 +61,16 @@ public class GMail {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static Gmail getService() throws IOException, GeneralSecurityException {
+    private static Gmail getService() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
-        final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
+        NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
         return service;
     }
 
-    public static List<Message> listMessagesMatchingQuery(Gmail service, String userId,
+    private static List<Message> listMessagesMatchingQuery(Gmail service, String userId,
                                                           String query) throws IOException {
         ListMessagesResponse response = service.users().messages().list(userId).setQ(query).execute();
         List<Message> messages = new ArrayList<Message>();
@@ -84,40 +86,44 @@ public class GMail {
         }
         return messages;
     }
-    public static Message getMessage(Gmail service, String userId, List<Message> messages, int index)
+
+    private static Message getMessage(Gmail service, String userId, List<Message> messages, int index)
             throws IOException {
+        if (index < 0 || index >= messages.size()) {
+            log.error("Index of message is out of bound");
+        }
         Message message = service.users().messages().get(userId, messages.get(index).getId()).execute();
         return message;
     }
 
     public static HashMap<String, String> getGmailData(String query) {
 
-        try{
+        try {
+            log.info("Getting Gmail data for query: " + query);
             Gmail service = getService();
             List<Message> messages = listMessagesMatchingQuery(service, USER_ID, query);
-            if(messages.isEmpty()) {
+            if (messages.isEmpty()) {
+                log.info("No messages found for the query: " + query);
                 return null;
-            }
-            else {
+            } else {
                 Message message = getMessage(service, USER_ID, messages, 0);
-                JsonPath jp = new JsonPath(message.toString());
-                String subject = jp.getString("payload.headers.find { it.name == 'Subject' }.value");
-                String bodyEncoded = jp.getString("payload.parts[0].body.data");
+                JsonPath jsonPath = new JsonPath(message.toString());
+                String subject = jsonPath.getString("payload.headers.find { it.name == 'Subject' }.value");
+                String bodyEncoded = jsonPath.getString("payload.parts[0].body.data");
 
                 Base64.Decoder decoder = Base64.getUrlDecoder();
                 String body = new String(decoder.decode(bodyEncoded));
 
                 allURLS = extractUrls(body);
 
-                HashMap<String, String> hm = new HashMap<String, String>();
-//                hm.put("subject", subject);
-                hm.put("body", body);
-                hm.put("link", allURLS.toString());
-                return hm;
+                HashMap<String, String> messageMap = new HashMap<String, String>();
+                messageMap.put("body", body);
+                messageMap.put("link", allURLS.toString());
+                log.info("Gmail data retrieved successfully for query: " + query);
+                return messageMap;
             }
-        }
-        catch (Exception e) {
-            System.out.println("Something went wrong");
+        } catch (Exception e) {
+            log.error("Error while getting Gmail data for query: " + query);
             throw new RuntimeException(e);
         }
     }
@@ -125,10 +131,9 @@ public class GMail {
 
     /**
      * Get all the URLs from Email content
-     * @param emailBody Email body
-     * @return
      */
     public static List<String> extractUrls(String emailBody) {
+        log.info("Extracting URLs from email body.");
         List<String> containedUrls = new ArrayList<String>();
         String urlRegex = "((https?|ftp|gopher|telnet|file):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)";
         Pattern pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
@@ -139,36 +144,29 @@ public class GMail {
                     urlMatcher.end(0)));
         }
 
+        log.info("URLs extracted successfully.");
         return containedUrls;
     }
 
     public static int getTotalCountOfMails() {
+        log.info("Getting total count of mails.");
         int size;
         try {
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
-            List<Thread> threads = service.
-                    users().
-                    threads().
-                    list("me").
-                    execute().
-                    getThreads();
+            Gmail service = getService();
+            List<Thread> threads = service.users().threads().list("me").execute().getThreads();
             size = threads.size();
+            log.info("Total count of mails obtained: " + size);
         } catch (Exception e) {
-            System.out.println("Exception log " + e);
+            log.error("Exception while getting total count of mails.");
             size = -1;
         }
         return size;
     }
 
     public static boolean isMailExist(String messageTitle) {
+        log.info("Checking if mail exists with title: " + messageTitle);
         try {
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
+            Gmail service = getService();
             ListMessagesResponse response = service.
                     users().
                     messages().
@@ -176,21 +174,21 @@ public class GMail {
                     setQ("subject:" + messageTitle).
                     execute();
             List<Message> messages = getMessages(response);
+            boolean exists = !messages.isEmpty();
+            log.info("Mail exists: " + exists);
             return !messages.isEmpty();
         } catch (Exception e) {
-            System.out.println("Exception log" + e);
+            log.error("Exception while checking if mail exists.");
             return false;
         }
     }
 
 
     private static List<Message> getMessages(ListMessagesResponse response) {
+        log.info("Getting messages.");
         List<Message> messages = new ArrayList<Message>();
         try {
-            final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-            Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
-                    .setApplicationName(APPLICATION_NAME)
-                    .build();
+            Gmail service = getService();
             while (response.getMessages() != null) {
                 messages.addAll(response.getMessages());
                 if (response.getNextPageToken() != null) {
@@ -203,82 +201,44 @@ public class GMail {
             }
             return messages;
         } catch (Exception e) {
-            System.out.println("Exception log " + e);
-            return messages;
+            log.info("Exception while getting messages: " + e.getMessage());
         }
+        log.info("Messages obtained successfully.");
+        return messages;
     }
 
 
     /**
      * Get the latest unread message of given to_user_email_id and Subject
-     * Try to find the mail for 10 times
-     * If that email in not found then return null string
-     * @param toEmail
-     * @param subject
-     * @return
      */
     public static String getEmailBody(String toEmail, String subject) {
-        String query = "to:("+toEmail+") subject:("+subject+")";
-
+        log.info("Getting email body for " + toEmail + " and title: " + subject);
+        String query = "to:(" + toEmail + ") subject:(" + subject + ")";
         String body = null;
 
-        for(int i = 0; i<3; i++) {
-            try {
-                body=getGmailData(query).get("body");
-                break;
-            }
-            catch (NullPointerException n) {
-                try {
-                    java.lang.Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
+        try {
+            body = getGmailData(query).get("body");
+            log.info("Email body retrieved successfully.");
+        } catch (Exception e) {
+            log.error("Error while getting email body.");
         }
         return body;
 
     }
 
     public static String getEmailLink(String toEmail, String subject) {
-        String query = "to:("+toEmail+") subject:("+subject+")";
-
+        log.info("Getting email link for " + toEmail + " and title: " + subject);
+        String query = "to:(" + toEmail + ") subject:(" + subject + ")";
         String link = null;
 
-        for(int i = 0; i<3; i++) {
-            try {
-                link=getGmailData(query).get("link");
-                break;
-            }
-            catch (NullPointerException n) {
-                try {
-                    java.lang.Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
+        try {
+            link = getGmailData(query).get("link");
+            log.info("Email link retrieved successfully.");
+        } catch (Exception e) {
+            log.error("Error while getting email body.");
         }
         return link;
 
     }
-
-    /*
-    * run main() to get authorize (1st time)
-    * */
-//    public static void main(String[] args) throws IOException, GeneralSecurityException {
-//        String body = getEmailBody("qa@codelink.io","Testing");
-//        System.out.println("Final Body: " + body);
-//        String link = getEmailLink("qa@codelink.io","Testing");
-//        System.out.println("Final Body: " + link);
-//        System.out.println("Total mail(s):" + getTotalCountOfMails());
-//        System.out.println("Is mail exist: " + isMailExist("Testing"));
-//    }
 
 }
