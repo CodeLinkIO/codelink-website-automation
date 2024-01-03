@@ -13,9 +13,13 @@
             <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
         </Logger>
+        <Logger name="src/Codelink_Website/core/ultilities/GMail.java" level="debug" additivity="false">
+            <AppenderRef ref="LogToFile"/>
+        </Logger>
         <Root level="debug">
             <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="GmailLog"/>
         </Root>
     </Loggers>
 </Configuration>
