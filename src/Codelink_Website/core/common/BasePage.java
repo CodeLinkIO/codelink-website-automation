@@ -495,7 +495,7 @@ public class BasePage {
     }
 
     public void overrideImplicitTimeout(WebDriver driver, long timeOut) {
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalConstants.VERY_SHORT_TIME));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalConstants.VERY_SHORT_TIMEOUT));
     }
 
     public boolean isElementUndisplayed(WebDriver driver, String locatorType) {

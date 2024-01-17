@@ -15,7 +15,7 @@ public class ExtentTestManager {
         return extentTestMap.get((int) Thread.currentThread().getId());
     }
 
-    public static void logInfo(String info) {
+    public static void logInfoToReport(String info) {
         getTest().log(Status.INFO, info);
     }
 

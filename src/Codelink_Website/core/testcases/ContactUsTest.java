@@ -1,6 +1,7 @@
 package testcases;
 
 import common.BaseTest;
+import common.GlobalConstants;
 import ultilities.DataFakerHelpers;
 import pageObjects.ContactUsPage;
 import pageObjects.HomePage;
@@ -14,8 +15,9 @@ import org.testng.annotations.Test;
 import ultilities.GMail;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-import static reportConfig.ExtentTestManager.logInfo;
+import static reportConfig.ExtentTestManager.logInfoToReport;
 import static reportConfig.ExtentTestManager.startTest;
 
 public class ContactUsTest extends BaseTest {
@@ -40,59 +42,59 @@ public class ContactUsTest extends BaseTest {
         String phoneNumber= DataFakerHelpers.getFaker().phoneNumber().cellPhone();
 
         startTest(method.getName(),"Contact Us flow with Embedded Team");
-        logInfo("Open Contact Us page");
+        logInfoToReport("Open Contact Us page");
         contactUsPage= homePage.navigateToContactUsPage();
 
-        logInfo("Verify Contact Us page is displayed");
+        logInfoToReport("Verify Contact Us page is displayed");
         Assert.assertTrue(contactUsPage.isWelcomeTitleDisplayed());
 
-        logInfo("Open Our Solution page");
+        logInfoToReport("Open Our Solution page");
         ourSolutionPage=contactUsPage.navigateToOurSolutionsPage();
 
-        logInfo("Select desired team");
+        logInfoToReport("Select desired team");
         ourSolutionPage.selectDesiredTeam("Scale your team");
 
-        logInfo("Choose team members");
+        logInfoToReport("Choose team members");
         ourSolutionPage.chooseTeamMember("Product Owner");
         ourSolutionPage.chooseTeamMember("Technical Lead");
         ourSolutionPage.chooseTeamMember("Front-end Developer");
         ourSolutionPage.chooseTeamMember("Back-end Developer");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Input Project Overview");
+        logInfoToReport("Input Project Overview");
         ourSolutionPage.inputProjectOverview("CL QA testing");
 
-        logInfo("Project languages");
+        logInfoToReport("Project languages");
         ourSolutionPage.hasLanguageOrFrameworkDefined("No");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Select Start Date & Time Frame");
+        logInfoToReport("Select Start Date & Time Frame");
         ourSolutionPage.startDate("Next few months");
         ourSolutionPage.timeFrame("Over 6 months");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Input customer first name: " + firstName);
+        logInfoToReport("Input customer first name: " + firstName);
         ourSolutionPage.inputUserInfo("First Name",firstName);
 
-        logInfo("Input customer last name: " + lastName);
+        logInfoToReport("Input customer last name: " + lastName);
         ourSolutionPage.inputUserInfo("Last Name",lastName);
 
-        logInfo("Input customer email: " + email);
+        logInfoToReport("Input customer email: " + email);
         ourSolutionPage.inputUserInfo("Email",email);
 
-        logInfo("Input phone number: "+phoneNumber);
+        logInfoToReport("Input phone number: "+phoneNumber);
         ourSolutionPage.inputUserInfo("Phone Number", phoneNumber);
 
-        logInfo("Select timezone");
+        logInfoToReport("Select timezone");
         ourSolutionPage.selectTimezone("(GMT -8:00) Pacific Time (US & Canada)");
 
-        logInfo("Input company name: " + companyName);
+        logInfoToReport("Input company name: " + companyName);
         ourSolutionPage.inputUserInfo("Company Name",companyName);
 
-        logInfo("Finish the form");
+        logInfoToReport("Finish the form");
         ourSolutionPage.clickOnFinishButton();
 
-        logInfo("Verify the success message displayed");
+        logInfoToReport("Verify the success message displayed");
         Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
     }
 
@@ -101,25 +103,31 @@ public class ContactUsTest extends BaseTest {
         String fullName= DataFakerHelpers.getFaker().name().fullName();
         String email= DataFakerHelpers.getFaker().internet().emailAddress();
         String phoneNumber= DataFakerHelpers.getFaker().phoneNumber().cellPhone();
+        String message= "QA Team Test"+generateRandomNumber();
 
         startTest(method.getName(),"Contact Us flow with send message");
-        logInfo("Open Contact Us page");
+        logInfoToReport("Open Contact Us page");
         contactUsPage= homePage.navigateToContactUsPage();
 
-        logInfo("Verify Contact Us page is displayed");
-        Assert.assertTrue(contactUsPage.isWelcomeTitleDisplayed());
+        logInfoToReport("Input customer name: "+ fullName);
+        contactUsPage.inputUserInfo("name", fullName);
 
-        logInfo("Input customer name: "+fullName);
-        contactUsPage.inputUserInfoByName("name",fullName);
+        logInfoToReport("Input customer phone number: "+ phoneNumber);
+        contactUsPage.inputUserInfo("phone", phoneNumber);
 
-        logInfo("Input customer phone number: "+phoneNumber);
-        contactUsPage.inputUserInfoByName("phone",phoneNumber);
+        logInfoToReport("Input customer email: "+email);
+        contactUsPage.inputUserInfo("email", email);
 
-        logInfo("Input customer email: "+email);
-        contactUsPage.inputUserInfoByName("email",fullName);
+        logInfoToReport("Input message");
+        contactUsPage.inputMessage(message);
 
-        logInfo("Click on Send message");
+        logInfoToReport("Click on Send message");
         contactUsPage.clickSendMessage();
+        sleepInSecond(GlobalConstants.SEND_EMAIL_TIMEOUT);
+
+        logInfoToReport("Verify email content has been sent correctly");
+        List<String> expectedEmailContents= List.of(new String[]{fullName, phoneNumber, email});
+        Assert.assertTrue(GMail.isEmailContentMeetExpectation(GlobalConstants.EMAIL_ACCOUNT,"Website Inbound",expectedEmailContents));
     }
 
     @Test
@@ -131,61 +139,61 @@ public class ContactUsTest extends BaseTest {
         String phoneNumber= DataFakerHelpers.getFaker().phoneNumber().cellPhone();
 
         startTest(method.getName(),"Contact Us flow with autonomous team");
-        logInfo("Open Contact Us page");
+        logInfoToReport("Open Contact Us page");
         contactUsPage= homePage.navigateToContactUsPage();
 
-        logInfo("Open Our Solution page");
+        logInfoToReport("Open Our Solution page");
         ourSolutionPage=contactUsPage.navigateToOurSolutionsPage();
 
-        logInfo("Choose desired team");
+        logInfoToReport("Choose desired team");
         ourSolutionPage.selectDesiredTeam("Build your product");
 
-        logInfo("Input Project Goal");
+        logInfoToReport("Input Project Goal");
         ourSolutionPage.inputProjectGoal("Test Contact Us flow with Autonomous Team");
 
-        logInfo("Select Platform");
+        logInfoToReport("Select Platform");
         ourSolutionPage.selectPlatform("Mobile Web App");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Project languages");
+        logInfoToReport("Project languages");
         ourSolutionPage.hasLanguageOrFrameworkDefined("No");
 
-        logInfo("Select new or existing product or code");
+        logInfoToReport("Select new or existing product or code");
         ourSolutionPage.selectNewOrExistingProduct("New");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Select start date");
+        logInfoToReport("Select start date");
         ourSolutionPage.startDate("ASAP!");
 
-        logInfo("Select target dates");
+        logInfoToReport("Select target dates");
         ourSolutionPage.hasTargetDatesSet("No");
 
-        logInfo("Select budget");
+        logInfoToReport("Select budget");
         ourSolutionPage.selectBudget("Between 20k - 50k ($US)");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Input customer first name: " + firstName);
+        logInfoToReport("Input customer first name: " + firstName);
         ourSolutionPage.inputUserInfo("First Name",firstName);
 
-        logInfo("Input customer last name: " + lastName);
+        logInfoToReport("Input customer last name: " + lastName);
         ourSolutionPage.inputUserInfo("Last Name",lastName);
 
-        logInfo("Input customer email: " + email);
+        logInfoToReport("Input customer email: " + email);
         ourSolutionPage.inputUserInfo("Email",email);
 
-        logInfo("Input phone number");
+        logInfoToReport("Input phone number");
         ourSolutionPage.inputUserInfo("Phone Number", phoneNumber);
 
-        logInfo("Select timezone");
+        logInfoToReport("Select timezone");
         ourSolutionPage.selectTimezone("(GMT -8:00) Pacific Time (US & Canada)");
 
-        logInfo("Input company name" + companyName);
+        logInfoToReport("Input company name" + companyName);
         ourSolutionPage.inputUserInfo("Company Name",companyName);
 
-        logInfo("Finish the form");
+        logInfoToReport("Finish the form");
         ourSolutionPage.clickOnFinishButton();
 
-        logInfo("Verify the success message displayed");
+        logInfoToReport("Verify the success message displayed");
         Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
     }
 
