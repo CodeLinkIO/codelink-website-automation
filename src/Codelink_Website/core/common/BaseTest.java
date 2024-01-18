@@ -17,7 +17,7 @@ import java.util.Objects;
 public class BaseTest extends BasePage {
     protected WebDriver driver;
 
-    public WebDriver getWebDriver() {
+    public WebDriver getWebDriver(){
         return driver;
     }
 

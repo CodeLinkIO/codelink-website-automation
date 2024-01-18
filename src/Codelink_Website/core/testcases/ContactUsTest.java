@@ -61,14 +61,14 @@ public class ContactUsTest extends BaseTest {
         ourSolutionPage.chooseTeamMember("Back-end Developer");
         ourSolutionPage.clickOnNextButton();
 
-        logInfoToReport("Input Project Overview");
+        logInfoToReport("Input project overview");
         ourSolutionPage.inputProjectOverview("CL QA testing");
 
         logInfoToReport("Project languages");
         ourSolutionPage.hasLanguageOrFrameworkDefined("No");
         ourSolutionPage.clickOnNextButton();
 
-        logInfoToReport("Select Start Date & Time Frame");
+        logInfoToReport("Select start date & time frame");
         ourSolutionPage.startDate("Next few months");
         ourSolutionPage.timeFrame("Over 6 months");
         ourSolutionPage.clickOnNextButton();
@@ -82,7 +82,7 @@ public class ContactUsTest extends BaseTest {
         logInfoToReport("Input customer email: " + email);
         ourSolutionPage.inputUserInfo("Email",email);
 
-        logInfoToReport("Input phone number: "+phoneNumber);
+        logInfoToReport("Input phone number: "+ phoneNumber);
         ourSolutionPage.inputUserInfo("Phone Number", phoneNumber);
 
         logInfoToReport("Select timezone");
@@ -103,7 +103,7 @@ public class ContactUsTest extends BaseTest {
         String fullName= DataFakerHelpers.getFaker().name().fullName();
         String email= DataFakerHelpers.getFaker().internet().emailAddress();
         String phoneNumber= DataFakerHelpers.getFaker().phoneNumber().cellPhone();
-        String message= "QA Team Test"+generateRandomNumber();
+        String message= "QA Team Test"+ generateRandomNumber();
 
         startTest(method.getName(),"Contact Us flow with send message");
         logInfoToReport("Open Contact Us page");
@@ -115,13 +115,13 @@ public class ContactUsTest extends BaseTest {
         logInfoToReport("Input customer phone number: "+ phoneNumber);
         contactUsPage.inputUserInfo("phone", phoneNumber);
 
-        logInfoToReport("Input customer email: "+email);
+        logInfoToReport("Input customer email: "+ email);
         contactUsPage.inputUserInfo("email", email);
 
         logInfoToReport("Input message");
         contactUsPage.inputMessage(message);
 
-        logInfoToReport("Click on Send message");
+        logInfoToReport("Click send message");
         contactUsPage.clickSendMessage();
         sleepInSecond(GlobalConstants.SEND_EMAIL_TIMEOUT);
 
@@ -148,10 +148,10 @@ public class ContactUsTest extends BaseTest {
         logInfoToReport("Choose desired team");
         ourSolutionPage.selectDesiredTeam("Build your product");
 
-        logInfoToReport("Input Project Goal");
+        logInfoToReport("Input project goal");
         ourSolutionPage.inputProjectGoal("Test Contact Us flow with Autonomous Team");
 
-        logInfoToReport("Select Platform");
+        logInfoToReport("Select platform");
         ourSolutionPage.selectPlatform("Mobile Web App");
         ourSolutionPage.clickOnNextButton();
 
