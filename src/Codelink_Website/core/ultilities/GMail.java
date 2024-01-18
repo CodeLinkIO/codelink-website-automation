@@ -248,4 +248,3 @@ public class GMail {
         return link;
     }
 }
-
