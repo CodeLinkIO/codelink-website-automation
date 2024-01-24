@@ -3,7 +3,7 @@ package testcases;
 import common.BaseTest;
 import common.GlobalConstants;
 import org.testng.Assert;
-import pageObjects.CommonFunctionsPage;
+import pageObjects.MainMenuBar;
 import reportConfig.ExtentTestManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
@@ -17,13 +17,13 @@ import static reportConfig.ExtentTestManager.logInfo;
 
 public class ServicesTest extends BaseTest {
     WebDriver driver;
-    CommonFunctionsPage commonFunctionsPage;
+    MainMenuBar mainMenuBar;
 
     @Parameters({"browser", "environmentName"})
     @BeforeClass(alwaysRun = true)
     public void beforeClass(String browser, String envName) {
         driver = getBrowserDriver(browser, envName);
-        commonFunctionsPage = new CommonFunctionsPage(driver);
+        mainMenuBar = new MainMenuBar(driver);
     }
 
     @Test
@@ -31,44 +31,44 @@ public class ServicesTest extends BaseTest {
         ExtentTestManager.startTest(method.getName(), "Services Pages");
 
         logInfo("Select Services in home bar");
-        commonFunctionsPage.selectHomeBar("Services");
+        mainMenuBar.hoverItemOnMainMenu("Services");
 
         logInfo("Open Artificial Intelligence & Machine Learning page");
-        commonFunctionsPage.selectItemInHomeBar("Artificial Intelligence & Machine Learning");
+        mainMenuBar.selectItemOnSubMenu("Artificial Intelligence & Machine Learning");
 
         logInfo("Verify Artificial Intelligence & Machine Learning page is displayed correctly");
-        Assert.assertTrue(commonFunctionsPage.isTitleDisplayed("Artificial Intelligence & Machine Learning"));
-        Assert.assertEquals(commonFunctionsPage.getPageURL(driver), GlobalConstants.ARTIFICIAL_INTELLIGENCE_PAGE);
+        Assert.assertTrue(mainMenuBar.isTitleDisplayed("Artificial Intelligence & Machine Learning"));
+        Assert.assertEquals(mainMenuBar.getPageURL(driver), GlobalConstants.ARTIFICIAL_INTELLIGENCE_PAGE);
 
         logInfo("Select Services in home bar");
-        commonFunctionsPage.selectHomeBar("Services");
+        mainMenuBar.hoverItemOnMainMenu("Services");
 
         logInfo("Open Software Development page");
-        commonFunctionsPage.selectItemInHomeBar("Software Development");
+        mainMenuBar.selectItemOnSubMenu("Software Development");
 
         logInfo("Verify Software Development page is displayed correctly");
-        Assert.assertTrue(commonFunctionsPage.isTitleDisplayed("Software Development"));
-        Assert.assertEquals(commonFunctionsPage.getPageURL(driver), GlobalConstants.SOFTWARE_DEVELOPMENT_PAGE);
+        Assert.assertTrue(mainMenuBar.isTitleDisplayed("Software Development"));
+        Assert.assertEquals(mainMenuBar.getPageURL(driver), GlobalConstants.SOFTWARE_DEVELOPMENT_PAGE);
 
         logInfo("Select Services in home bar");
-        commonFunctionsPage.selectHomeBar("Services");
+        mainMenuBar.hoverItemOnMainMenu("Services");
 
         logInfo("Open Embedded Teams page");
-        commonFunctionsPage.selectItemInHomeBar("Embedded Teams");
+        mainMenuBar.selectItemOnSubMenu("Embedded Teams");
 
         logInfo("Verify Software Development page is displayed correctly");
-        Assert.assertTrue(commonFunctionsPage.isTitleDisplayed("Embedded Teams"));
-        Assert.assertEquals(commonFunctionsPage.getPageURL(driver), GlobalConstants.EMBEDDED_TEAMS_PAGE);
+        Assert.assertTrue(mainMenuBar.isTitleDisplayed("Embedded Teams"));
+        Assert.assertEquals(mainMenuBar.getPageURL(driver), GlobalConstants.EMBEDDED_TEAMS_PAGE);
 
         logInfo("Select Services in home bar");
-        commonFunctionsPage.selectHomeBar("Services");
+        mainMenuBar.hoverItemOnMainMenu("Services");
 
         logInfo("Open Start-up Growth page");
-        commonFunctionsPage.selectItemInHomeBar("Start-up Growth");
+        mainMenuBar.selectItemOnSubMenu("Start-up Growth");
 
         logInfo("Verify Start-up Growth page is displayed correctly");
-        Assert.assertTrue(commonFunctionsPage.isTitleDisplayed("Start-up Growth"));
-        Assert.assertEquals(commonFunctionsPage.getPageURL(driver), GlobalConstants.START_UP_GROWTH_PAGE);
+        Assert.assertTrue(mainMenuBar.isTitleDisplayed("Start-up Growth"));
+        Assert.assertEquals(mainMenuBar.getPageURL(driver), GlobalConstants.START_UP_GROWTH_PAGE);
     }
 
     @AfterClass(alwaysRun = true)
