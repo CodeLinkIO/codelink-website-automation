@@ -20,6 +20,7 @@ import io.restassured.path.json.JsonPath;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -103,6 +104,7 @@ public class GMail {
                 return null;
             } else {
                 Message message = getMessage(service, USER_ID, messages, 0);
+                System.out.println("Message: "+ message);
                 JsonPath jsonPath = new JsonPath(message.toString());
                 String bodyEncoded = null;
                 if (jsonPath.getString("payload.parts") == null) {
@@ -125,18 +127,6 @@ public class GMail {
             log.error("Error while getting Gmail data for query: " + query);
             throw new RuntimeException(e);
         }
-    }
-
-    public static boolean isEmailContentMeetExpectation(String toEmail, String subject, List<String> listOfExpectedContents) {
-        String emailContent = getEmailBody(toEmail, subject);
-        boolean isContentMetExpectation = true;
-        for (String content : listOfExpectedContents) {
-            if (!emailContent.contains(content)) {
-                isContentMetExpectation = false;
-                break;
-            }
-        }
-        return isContentMetExpectation;
     }
 
 
@@ -247,4 +237,24 @@ public class GMail {
         }
         return link;
     }
+
+    public static boolean isEmailContentMeetExpectation(String toEmail, String subject, List<String> listOfExpectedContents) {
+        String emailContent;
+        LocalTime stopTime = LocalTime.now().plusMinutes(1);
+        LocalTime currentTime;
+        int compareCurrentTimeWithStopTime;
+        do {
+            emailContent = getEmailBody(toEmail, subject);
+            currentTime = LocalTime.now();
+            compareCurrentTimeWithStopTime = currentTime.compareTo(stopTime);
+        } while (emailContent == null && compareCurrentTimeWithStopTime <= 0);
+        for (String content : listOfExpectedContents) {
+            if (!emailContent.contains(content)) {
+                log.error("Actual result: Email content " + emailContent + " doesn't meet expectation " + listOfExpectedContents);
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
