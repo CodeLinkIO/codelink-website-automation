@@ -17,5 +17,8 @@ public class GlobalConstants {
     public static final String OS_NAME = System.getProperty("os.name");
     public static final String EMAIL_ACCOUNT = "cl-site-stg-automation@codelink.io";
     public static final String SCREENSHOTS_FILE_PATH = PROJECT_PATH +File.separator +"reportNGScreenshots" + File.separator;
-
+    public static String ARTIFICIAL_INTELLIGENCE_PAGE= "https://trantor.codelink.io/services/ai-ml";
+    public static String SOFTWARE_DEVELOPMENT_PAGE= "https://trantor.codelink.io/services/software-development";
+    public static String EMBEDDED_TEAMS_PAGE= "https://trantor.codelink.io/services/embedded-teams";
+    public static String START_UP_GROWTH_PAGE= "https://trantor.codelink.io/services/start-up-growth";
 }
