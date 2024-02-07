@@ -104,7 +104,6 @@ public class GMail {
                 return null;
             } else {
                 Message message = getMessage(service, USER_ID, messages, 0);
-                System.out.println("Message: "+ message);
                 JsonPath jsonPath = new JsonPath(message.toString());
                 String bodyEncoded = null;
                 if (jsonPath.getString("payload.parts") == null) {
@@ -250,11 +249,29 @@ public class GMail {
         } while (emailContent == null && compareCurrentTimeWithStopTime <= 0);
         for (String content : listOfExpectedContents) {
             if (!emailContent.contains(content)) {
-                log.error("Actual result: Email content " + emailContent + " doesn't meet expectation " + listOfExpectedContents);
+                log.error("Actual result: Email content: [" + emailContent + " ] doesn't meet expectation " + listOfExpectedContents);
                 return false;
             }
         }
         return true;
+    }
+
+    public static void deleteEmail(String query){
+        try {
+            log.info("Getting list messages for query: " + query);
+            Gmail service = getService();
+            List<Message> messages = listMessagesMatchingQuery(service, USER_ID, query);
+            if (messages.isEmpty()) {
+                log.info("No messages found for the query: " + query);
+            } else {
+                for (Message message: messages) {
+                    service.users().messages().delete(USER_ID, message.getId()).execute();
+                    log.info("Deleted successfully message ID: " + message.getId());
+                }
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

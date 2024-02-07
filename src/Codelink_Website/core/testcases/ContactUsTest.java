@@ -107,6 +107,10 @@ public class ContactUsTest extends BaseTest {
         message = "AUTOMATION TEST " + generateRandomNumber();
 
         startTest(method.getName(), "Contact Us with Send Message flow");
+
+        logInfoToReport("Delete existing email");
+        GMail.deleteEmail("Website Inbound");
+
         logInfoToReport("Open Contact Us page");
         contactUsPage = homePage.navigateToContactUsPage();
 
