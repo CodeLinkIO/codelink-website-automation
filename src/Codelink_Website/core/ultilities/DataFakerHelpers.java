@@ -17,7 +17,7 @@ public class DataFakerHelpers {
         return faker;
     }
 
-    public static Faker getFaker() {
+    public static Faker getDataFaker() {
         if (faker == null) {
             faker = createFaker();
         }

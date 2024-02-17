@@ -2,7 +2,6 @@ package testcases;
 
 import common.BaseTest;
 import common.GlobalConstants;
-import ultilities.DataFakerHelpers;
 import pageObjects.ContactUsPage;
 import pageObjects.HomePage;
 import pageObjects.OurSolutionsPage;
@@ -19,6 +18,7 @@ import java.util.List;
 
 import static reportConfig.ExtentTestManager.logInfoToReport;
 import static reportConfig.ExtentTestManager.startTest;
+import static ultilities.DataFakerHelpers.getDataFaker;
 
 public class ContactUsTest extends BaseTest {
     WebDriver driver;
@@ -36,11 +36,11 @@ public class ContactUsTest extends BaseTest {
 
     @Test
     public void Contact_Us_Flow_With_Embedded_Team(Method method) {
-        firstName = DataFakerHelpers.getFaker().name().firstName();
-        lastName = DataFakerHelpers.getFaker().name().lastName();
-        email = DataFakerHelpers.getFaker().internet().emailAddress();
-        companyName = DataFakerHelpers.getFaker().company().name();
-        phoneNumber = DataFakerHelpers.getFaker().phoneNumber().cellPhone();
+        firstName = getDataFaker().name().firstName();
+        lastName = getDataFaker().name().lastName();
+        email = getDataFaker().internet().emailAddress();
+        companyName = getDataFaker().company().name();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
 
         startTest(method.getName(), "Contact Us flow with Embedded Team");
         logInfoToReport("Open Contact Us page");
@@ -101,9 +101,9 @@ public class ContactUsTest extends BaseTest {
 
     @Test
     public void Contact_Us_Flow_With_Send_Message(Method method) {
-        fullName = DataFakerHelpers.getFaker().name().fullName();
-        email = DataFakerHelpers.getFaker().internet().emailAddress();
-        phoneNumber = DataFakerHelpers.getFaker().phoneNumber().cellPhone();
+        fullName = getDataFaker().name().fullName();
+        email = getDataFaker().internet().emailAddress();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
         message = "AUTOMATION TEST " + generateRandomNumber();
 
         startTest(method.getName(), "Contact Us with Send Message flow");
@@ -136,11 +136,11 @@ public class ContactUsTest extends BaseTest {
 
     @Test
     public void Contact_Us_Flow_With_Autonomous_Team(Method method) {
-        firstName = DataFakerHelpers.getFaker().name().firstName();
-        lastName = DataFakerHelpers.getFaker().name().lastName();
-        email = DataFakerHelpers.getFaker().internet().emailAddress();
-        companyName = DataFakerHelpers.getFaker().company().name();
-        phoneNumber = DataFakerHelpers.getFaker().phoneNumber().cellPhone();
+        firstName = getDataFaker().name().firstName();
+        lastName = getDataFaker().name().lastName();
+        email = getDataFaker().internet().emailAddress();
+        companyName = getDataFaker().company().name();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
 
         startTest(method.getName(), "Contact Us flow with autonomous team");
         logInfoToReport("Open Contact Us page");
@@ -200,7 +200,6 @@ public class ContactUsTest extends BaseTest {
         logInfoToReport("Verify the success message displayed");
         Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
     }
-
     @AfterClass(alwaysRun = true)
     public void afterClass() {
         closeBrowserDriver();
