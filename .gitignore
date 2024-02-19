@@ -1,6 +1,7 @@
 ##############################
 ## Java
 ##############################
+
 .mtj.tmp/
 *.class
 *.jar
@@ -12,6 +13,7 @@ hs_err_pid*
 ##############################
 ## Maven
 ##############################
+
 test-output/
 target/
 pom.xml.tag
@@ -26,10 +28,13 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 src/main/resources/credentials/
 logs/
+reports/
+.idea/
 
 ##############################
 ## Eclipse
 ##############################
+
 .settings/
 bin/
 tmp/
@@ -47,4 +52,5 @@ local.properties
 ##############################
 ## OS X
 ##############################
+
 .DS_Store

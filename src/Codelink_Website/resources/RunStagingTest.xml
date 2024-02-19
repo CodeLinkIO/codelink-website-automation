@@ -13,7 +13,9 @@
         <classes>
             <class name="testcases.ContactUsTest">
                 <methods>
-                    <include name="Contact_Us_Flow_With_Embedded_Team" />
+                    <include name="Contact_Us_Flow_With_Send_Message"/>
+                    <include name="Contact_Us_Flow_With_Embedded_Team"/>
+                    <include name="Contact_Us_Flow_With_Autonomous_Team"/>
                 </methods>
             </class>
         </classes>

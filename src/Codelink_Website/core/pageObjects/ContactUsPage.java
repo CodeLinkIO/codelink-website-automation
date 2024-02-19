@@ -2,6 +2,7 @@ package pageObjects;
 
 import common.BasePage;
 import interfaces.ContactUsUI;
+import interfaces.OurSolutionUI;
 import org.openqa.selenium.WebDriver;
 
 public class ContactUsPage extends BasePage {
@@ -20,5 +21,22 @@ public class ContactUsPage extends BasePage {
         waitForElementVisible(driver, ContactUsUI.LETS_BEGIN_LINK);
         clickToElement(driver, ContactUsUI.LETS_BEGIN_LINK);
         return new OurSolutionsPage(driver);
+    }
+
+    public void inputUserInfo(String textboxName, String inputValue){
+        waitForElementVisible(driver, ContactUsUI.CUSTOMER_INFO_TEXTBOX_BY_NAME, textboxName);
+        scrollToElement(driver,ContactUsUI.CUSTOMER_INFO_TEXTBOX_BY_NAME, textboxName);
+        sendKeyToElement(driver,ContactUsUI.CUSTOMER_INFO_TEXTBOX_BY_NAME, inputValue,textboxName);
+    }
+
+    public void clickSendMessage() {
+        waitForElementVisible(driver, OurSolutionUI.DYNAMIC_BUTTON_BY_NAME, "Send message");
+        waitForElementClickable(driver, OurSolutionUI.DYNAMIC_BUTTON_BY_NAME, "Send message");
+        clickToElement(driver, OurSolutionUI.DYNAMIC_BUTTON_BY_NAME, "Send message");
+    }
+
+    public void inputMessage(String message){
+        waitForElementVisible(driver, ContactUsUI.MESSAGE_TEXTBOX);
+        sendKeyToElement(driver, ContactUsUI.MESSAGE_TEXTBOX, message);
     }
 }

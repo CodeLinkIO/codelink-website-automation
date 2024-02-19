@@ -15,9 +15,9 @@ public class OurSolutionsPage extends BasePage {
     }
 
     public void chooseTeamMember(String teamMemberRole){
-        waitForElementVisible(driver, OurSolutionUI.TEAM_MEMBER_SELECTION_BY_ROLE, teamMemberRole);
-        scrollToElement(driver, OurSolutionUI.TEAM_MEMBER_SELECTION_BY_ROLE, teamMemberRole);
-        clickToElement(driver, OurSolutionUI.TEAM_MEMBER_SELECTION_BY_ROLE, teamMemberRole);
+        waitForElementVisible(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, teamMemberRole);
+        scrollToElement(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, teamMemberRole);
+        clickToElement(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, teamMemberRole);
     }
 
     public void selectDesiredTeam(String teamType) {
@@ -31,11 +31,11 @@ public class OurSolutionsPage extends BasePage {
     }
 
     public void inputProjectOverview(String describeProjectOverview){
-        waitForElementVisible(driver,OurSolutionUI.PROJECT_OVERVIEW, describeProjectOverview);
-        sendKeyToElement(driver,OurSolutionUI.PROJECT_OVERVIEW, describeProjectOverview);
+        waitForElementVisible(driver,OurSolutionUI.PROJECT_OVERVIEW, "projectOverview");
+        sendKeyToElement(driver,OurSolutionUI.PROJECT_OVERVIEW, describeProjectOverview, "projectOverview");
     }
 
-    public void languageOrFrameworkDefined(String yesNo){
+    public void hasLanguageOrFrameworkDefined(String yesNo){
         waitForElementVisible(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, yesNo);
         clickToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, yesNo);
     }
@@ -51,7 +51,7 @@ public class OurSolutionsPage extends BasePage {
         clickToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, timeFrame);
     }
 
-    public void inputUserInfoByName(String textboxName, String inputValue){
+    public void inputUserInfo(String textboxName, String inputValue){
         waitForElementVisible(driver,OurSolutionUI.DYNAMIC_TEXTBOX_BY_NAME, textboxName);
         scrollToElement(driver,OurSolutionUI.DYNAMIC_TEXTBOX_BY_NAME, textboxName);
         sendKeyToElement(driver,OurSolutionUI.DYNAMIC_TEXTBOX_BY_NAME, inputValue,textboxName);
@@ -84,5 +84,33 @@ public class OurSolutionsPage extends BasePage {
         return isElementDisplayed(driver,OurSolutionUI.SUCCESS_MESSAGE);
     }
 
+    public void inputProjectGoal(String describeProjectGoal){
+        waitForElementVisible(driver,OurSolutionUI.PROJECT_OVERVIEW, "projectGoal");
+        sendKeyToElement(driver,OurSolutionUI.PROJECT_OVERVIEW, describeProjectGoal, "projectGoal");
+    }
+
+    public void selectPlatform(String platform){
+        waitForElementVisible(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, platform);
+        scrollToElement(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, platform);
+        clickToElement(driver, OurSolutionUI.SELECT_TEAM_MEMBER_OR_PLATFORM, platform);
+    }
+
+    public void selectNewOrExistingProduct(String newOrExisting){
+        waitForElementVisible(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, newOrExisting);
+        scrollToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, newOrExisting);
+        clickToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, newOrExisting);
+    }
+
+    public void hasTargetDatesSet(String yesNo){
+        waitForElementVisible(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, yesNo);
+        scrollToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, yesNo);
+        clickToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, yesNo);
+    }
+
+    public void selectBudget(String budget){
+        waitForElementVisible(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, budget);
+        scrollToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, budget);
+        clickToElement(driver, OurSolutionUI.DYNAMIC_RADIO_BTN, budget);
+    }
 
 }

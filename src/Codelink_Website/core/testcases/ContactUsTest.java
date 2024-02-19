@@ -1,11 +1,10 @@
 package testcases;
 
 import common.BaseTest;
-import ultilities.DataFakerHelpers;
+import common.GlobalConstants;
 import pageObjects.ContactUsPage;
 import pageObjects.HomePage;
 import pageObjects.OurSolutionsPage;
-import reportConfig.ExtentTestManager;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -15,20 +14,18 @@ import org.testng.annotations.Test;
 import ultilities.GMail;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
-import static reportConfig.ExtentTestManager.logInfo;
+import static reportConfig.ExtentTestManager.logInfoToReport;
+import static reportConfig.ExtentTestManager.startTest;
+import static ultilities.DataFakerHelpers.getDataFaker;
 
 public class ContactUsTest extends BaseTest {
     WebDriver driver;
     HomePage homePage;
     ContactUsPage contactUsPage;
-
     OurSolutionsPage ourSolutionPage;
-
-    String firstName= DataFakerHelpers.getFaker().name().firstName();
-    String lastName= DataFakerHelpers.getFaker().name().lastName();
-    String email= DataFakerHelpers.getFaker().internet().emailAddress();
-    String companyName=DataFakerHelpers.getFaker().company().name();
+    String firstName, lastName, email, companyName, phoneNumber, fullName, message;
 
     @Parameters({"browser", "environmentName"})
     @BeforeClass(alwaysRun = true)
@@ -38,67 +35,173 @@ public class ContactUsTest extends BaseTest {
     }
 
     @Test
-    public void Contact_Us_Flow_With_Embedded_Team(Method method){
-        ExtentTestManager.startTest(method.getName(),"Contact Us flow with Embedded Team");
-        logInfo("Open Contact Us page");
-        contactUsPage= homePage.navigateToContactUsPage();
+    public void Contact_Us_Flow_With_Embedded_Team(Method method) {
+        firstName = getDataFaker().name().firstName();
+        lastName = getDataFaker().name().lastName();
+        email = getDataFaker().internet().emailAddress();
+        companyName = getDataFaker().company().name();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
 
-        logInfo("Verify Contact Us page is displayed");
-        ExtentTestManager.logInfo("Verify Contact Us page is displayed");
+        startTest(method.getName(), "Contact Us flow with Embedded Team");
+        logInfoToReport("Open Contact Us page");
+        contactUsPage = homePage.navigateToContactUsPage();
+
+        logInfoToReport("Verify Contact Us page is displayed");
         Assert.assertTrue(contactUsPage.isWelcomeTitleDisplayed());
 
-        logInfo("Open Our Solution page");
-        ourSolutionPage=contactUsPage.navigateToOurSolutionsPage();
+        logInfoToReport("Open Our Solution page");
+        ourSolutionPage = contactUsPage.navigateToOurSolutionsPage();
 
-        logInfo("Choose desired team");
+        logInfoToReport("Select desired team");
         ourSolutionPage.selectDesiredTeam("Scale your team");
 
-        logInfo("Choose team members");
+        logInfoToReport("Choose team members");
         ourSolutionPage.chooseTeamMember("Product Owner");
         ourSolutionPage.chooseTeamMember("Technical Lead");
         ourSolutionPage.chooseTeamMember("Front-end Developer");
         ourSolutionPage.chooseTeamMember("Back-end Developer");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Input Project Overview");
-        ourSolutionPage.inputProjectOverview("Testing");
+        logInfoToReport("Input project overview");
+        ourSolutionPage.inputProjectOverview("AUTOMATION TEST - Contact Us with Embedded Team flow");
 
-        logInfo("Project languages");
-        ourSolutionPage.languageOrFrameworkDefined("No");
+        logInfoToReport("Project languages");
+        ourSolutionPage.hasLanguageOrFrameworkDefined("No");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Select Start Date & Time Frame");
+        logInfoToReport("Select start date & time frame");
         ourSolutionPage.startDate("Next few months");
         ourSolutionPage.timeFrame("Over 6 months");
         ourSolutionPage.clickOnNextButton();
 
-        logInfo("Input customer first name " + firstName);
-        ourSolutionPage.inputUserInfoByName("First Name",firstName);
+        logInfoToReport("Input customer first name: " + firstName);
+        ourSolutionPage.inputUserInfo("First Name", firstName);
 
-        logInfo("Input customer last name " + lastName);
-        ourSolutionPage.inputUserInfoByName("Last Name",lastName);
+        logInfoToReport("Input customer last name: " + lastName);
+        ourSolutionPage.inputUserInfo("Last Name", lastName);
 
-        logInfo("Input customer email " + email);
-        ourSolutionPage.inputUserInfoByName("Email",email);
+        logInfoToReport("Input customer email: " + email);
+        ourSolutionPage.inputUserInfo("Email", email);
 
-        logInfo("Input phone number");
-        ourSolutionPage.inputUserInfoByName("Phone Number", "1234455");
+        logInfoToReport("Input phone number: " + phoneNumber);
+        ourSolutionPage.inputUserInfo("Phone Number", phoneNumber);
 
-        logInfo("Select timezone");
+        logInfoToReport("Select timezone");
         ourSolutionPage.selectTimezone("(GMT -8:00) Pacific Time (US & Canada)");
 
-        logInfo("Input company name" + companyName);
-        ourSolutionPage.inputUserInfoByName("Company Name",companyName);
+        logInfoToReport("Input company name: " + companyName);
+        ourSolutionPage.inputUserInfo("Company Name", companyName);
 
-        logInfo("Finish the form");
+        logInfoToReport("Finish the form");
         ourSolutionPage.clickOnFinishButton();
 
-        logInfo("Verify the success message displayed");
+        logInfoToReport("Verify the success message displayed");
         Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
     }
 
+    @Test
+    public void Contact_Us_Flow_With_Send_Message(Method method) {
+        fullName = getDataFaker().name().fullName();
+        email = getDataFaker().internet().emailAddress();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
+        message = "AUTOMATION TEST " + generateRandomNumber();
+
+        startTest(method.getName(), "Contact Us with Send Message flow");
+
+        logInfoToReport("Delete existing email");
+        GMail.deleteEmail("Website Inbound");
+
+        logInfoToReport("Open Contact Us page");
+        contactUsPage = homePage.navigateToContactUsPage();
+
+        logInfoToReport("Input customer name: " + fullName);
+        contactUsPage.inputUserInfo("name", fullName);
+
+        logInfoToReport("Input customer phone number: " + phoneNumber);
+        contactUsPage.inputUserInfo("phone", phoneNumber);
+
+        logInfoToReport("Input customer email: " + email);
+        contactUsPage.inputUserInfo("email", email);
+
+        logInfoToReport("Input message");
+        contactUsPage.inputMessage(message);
+
+        logInfoToReport("Click send message");
+        contactUsPage.clickSendMessage();
+
+        logInfoToReport("Verify email content has been sent correctly");
+        List<String> expectedEmailContents = List.of(new String[]{fullName, phoneNumber, email});
+        Assert.assertTrue(GMail.isEmailContentMeetExpectation(GlobalConstants.EMAIL_ACCOUNT, "Website Inbound", expectedEmailContents));
+    }
+
+    @Test
+    public void Contact_Us_Flow_With_Autonomous_Team(Method method) {
+        firstName = getDataFaker().name().firstName();
+        lastName = getDataFaker().name().lastName();
+        email = getDataFaker().internet().emailAddress();
+        companyName = getDataFaker().company().name();
+        phoneNumber = getDataFaker().phoneNumber().cellPhone();
+
+        startTest(method.getName(), "Contact Us flow with autonomous team");
+        logInfoToReport("Open Contact Us page");
+        contactUsPage = homePage.navigateToContactUsPage();
+
+        logInfoToReport("Open Our Solution page");
+        ourSolutionPage = contactUsPage.navigateToOurSolutionsPage();
+
+        logInfoToReport("Choose desired team");
+        ourSolutionPage.selectDesiredTeam("Build your product");
+
+        logInfoToReport("Input project goal");
+        ourSolutionPage.inputProjectGoal("AUTOMATION TEST - Contact Us with Autonomous Team flow");
+
+        logInfoToReport("Select platform");
+        ourSolutionPage.selectPlatform("Mobile Web App");
+        ourSolutionPage.clickOnNextButton();
+
+        logInfoToReport("Project languages");
+        ourSolutionPage.hasLanguageOrFrameworkDefined("No");
+
+        logInfoToReport("Select new or existing product or code");
+        ourSolutionPage.selectNewOrExistingProduct("New");
+        ourSolutionPage.clickOnNextButton();
+
+        logInfoToReport("Select start date");
+        ourSolutionPage.startDate("ASAP!");
+
+        logInfoToReport("Select target dates");
+        ourSolutionPage.hasTargetDatesSet("No");
+
+        logInfoToReport("Select budget");
+        ourSolutionPage.selectBudget("Between 20k - 50k ($US)");
+        ourSolutionPage.clickOnNextButton();
+
+        logInfoToReport("Input customer first name: " + firstName);
+        ourSolutionPage.inputUserInfo("First Name", firstName);
+
+        logInfoToReport("Input customer last name: " + lastName);
+        ourSolutionPage.inputUserInfo("Last Name", lastName);
+
+        logInfoToReport("Input customer email: " + email);
+        ourSolutionPage.inputUserInfo("Email", email);
+
+        logInfoToReport("Input phone number");
+        ourSolutionPage.inputUserInfo("Phone Number", phoneNumber);
+
+        logInfoToReport("Select timezone");
+        ourSolutionPage.selectTimezone("(GMT -8:00) Pacific Time (US & Canada)");
+
+        logInfoToReport("Input company name" + companyName);
+        ourSolutionPage.inputUserInfo("Company Name", companyName);
+
+        logInfoToReport("Finish the form");
+        ourSolutionPage.clickOnFinishButton();
+
+        logInfoToReport("Verify the success message displayed");
+        Assert.assertTrue(ourSolutionPage.isSuccessMessageDisplayed());
+    }
     @AfterClass(alwaysRun = true)
-    public void afterClass(){
+    public void afterClass() {
         closeBrowserDriver();
     }
 }

@@ -8,7 +8,7 @@ import common.GlobalConstants;
 public class ExtentManager {
     static final ExtentReports extentReports = new ExtentReports();
     public synchronized static ExtentReports createExtentReports() {
-        ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extentreport/extentreport.html");
+        ExtentSparkReporter reporter = new ExtentSparkReporter("reports/extent-report.html");
         reporter.config().setReportName("Codelink_Website Report");
         reporter.config().setDocumentTitle("Codelink_Website Automation Report");
         reporter.config().setTimeStampFormat("EEEE, dd MMMM, yyyy, hh:mm a '('zzz')'");

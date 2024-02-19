@@ -35,7 +35,7 @@ public class BaseTest extends BasePage {
         } else {
             throw new RuntimeException("Browser name is invalid");
         }
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalConstants.NORMAL_TIME));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(GlobalConstants.NORMAL_TIMEOUT));
         driver.manage().window().maximize();
         driver.get(environmentURL(environmentName));
         return driver;
@@ -112,5 +112,4 @@ public class BaseTest extends BasePage {
         }
         return browserDriverName;
     }
-
 }

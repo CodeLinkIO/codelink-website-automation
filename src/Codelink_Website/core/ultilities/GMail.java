@@ -19,8 +19,8 @@ import common.GlobalConstants;
 import io.restassured.path.json.JsonPath;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +29,6 @@ public class GMail {
     private static final String APPLICATION_NAME = "Quickstart";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String USER_ID = "me";
-    private static List<String> allURLS;
 
     private static final List<String> SCOPES = Collections.singletonList(GmailScopes.MAIL_GOOGLE_COM);
     private static final String CREDENTIALS_FILE_PATH =
@@ -64,14 +63,13 @@ public class GMail {
     private static Gmail getService() throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        Gmail service = new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        return new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
-        return service;
     }
 
     private static List<Message> listMessagesMatchingQuery(Gmail service, String userId,
-                                                          String query) throws IOException {
+                                                           String query) throws IOException {
         ListMessagesResponse response = service.users().messages().list(userId).setQ(query).execute();
         List<Message> messages = new ArrayList<Message>();
         while (response.getMessages() != null) {
@@ -92,8 +90,7 @@ public class GMail {
         if (index < 0 || index >= messages.size()) {
             log.error("Index of message is out of bound");
         }
-        Message message = service.users().messages().get(userId, messages.get(index).getId()).execute();
-        return message;
+        return service.users().messages().get(userId, messages.get(index).getId()).execute();
     }
 
     public static HashMap<String, String> getGmailData(String query) {
@@ -108,13 +105,16 @@ public class GMail {
             } else {
                 Message message = getMessage(service, USER_ID, messages, 0);
                 JsonPath jsonPath = new JsonPath(message.toString());
-                String subject = jsonPath.getString("payload.headers.find { it.name == 'Subject' }.value");
-                String bodyEncoded = jsonPath.getString("payload.parts[0].body.data");
-
+                String bodyEncoded = null;
+                if (jsonPath.getString("payload.parts") == null) {
+                    bodyEncoded = jsonPath.getString("payload.body.data");
+                } else {
+                    bodyEncoded = jsonPath.getString("payload.parts[0].body.data");
+                }
                 Base64.Decoder decoder = Base64.getUrlDecoder();
                 String body = new String(decoder.decode(bodyEncoded));
 
-                allURLS = extractUrls(body);
+                List<String> allURLS = extractUrls(body);
 
                 HashMap<String, String> messageMap = new HashMap<String, String>();
                 messageMap.put("body", body);
@@ -215,7 +215,6 @@ public class GMail {
         log.info("Getting email body for " + toEmail + " and title: " + subject);
         String query = "to:(" + toEmail + ") subject:(" + subject + ")";
         String body = null;
-
         try {
             body = getGmailData(query).get("body");
             log.info("Email body retrieved successfully.");
@@ -223,14 +222,12 @@ public class GMail {
             log.error("Error while getting email body.");
         }
         return body;
-
     }
 
     public static String getEmailLink(String toEmail, String subject) {
         log.info("Getting email link for " + toEmail + " and title: " + subject);
         String query = "to:(" + toEmail + ") subject:(" + subject + ")";
         String link = null;
-
         try {
             link = getGmailData(query).get("link");
             log.info("Email link retrieved successfully.");
@@ -238,7 +235,43 @@ public class GMail {
             log.error("Error while getting email body.");
         }
         return link;
+    }
 
+    public static boolean isEmailContentMeetExpectation(String toEmail, String subject, List<String> listOfExpectedContents) {
+        String emailContent;
+        LocalTime stopTime = LocalTime.now().plusMinutes(1);
+        LocalTime currentTime;
+        int compareCurrentTimeWithStopTime;
+        do {
+            emailContent = getEmailBody(toEmail, subject);
+            currentTime = LocalTime.now();
+            compareCurrentTimeWithStopTime = currentTime.compareTo(stopTime);
+        } while (emailContent == null && compareCurrentTimeWithStopTime <= 0);
+        for (String content : listOfExpectedContents) {
+            if (!emailContent.contains(content)) {
+                log.error("Actual result: Email content: [" + emailContent + " ] doesn't meet expectation " + listOfExpectedContents);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void deleteEmail(String query){
+        try {
+            log.info("Getting list messages for query: " + query);
+            Gmail service = getService();
+            List<Message> messages = listMessagesMatchingQuery(service, USER_ID, query);
+            if (messages.isEmpty()) {
+                log.info("No messages found for the query: " + query);
+            } else {
+                for (Message message: messages) {
+                    service.users().messages().delete(USER_ID, message.getId()).execute();
+                    log.info("Deleted successfully message ID: " + message.getId());
+                }
+            }
+        } catch (IOException | GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
