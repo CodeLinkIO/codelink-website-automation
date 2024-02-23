@@ -38,4 +38,11 @@ public class GlobalConstants {
     public static String PLAYBOOK_PAGE = "https://trantor.codelink.io/our-playbook";
     public static String BLOG_PAGE = "https://trantor.codelink.io/blog";
     public static String CAREERS_PAGE = "https://apply.workable.com/codelink/?lng=en";
+
+    //Location pages
+    public static String HOCHIMINH_PAGE = "https://trantor.codelink.io/locations?index=0";
+    public static String TORONTO_PAGE = "https://trantor.codelink.io/locations?index=1";
+    public static String HANOI_PAGE = "https://trantor.codelink.io/locations?index=2";
+    public static String DANANG_PAGE = "https://trantor.codelink.io/locations?index=3";
+
 }
