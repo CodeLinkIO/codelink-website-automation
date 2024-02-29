@@ -45,4 +45,9 @@ public class GlobalConstants {
     public static String HANOI_PAGE = "https://trantor.codelink.io/locations?index=2";
     public static String DANANG_PAGE = "https://trantor.codelink.io/locations?index=3";
 
+    //Blog pages
+    public static String AUTOMATION_TESTING_PAGE = "https://trantor.codelink.io/blog/post/automation-testing-for-seo-title";
+    public static String AIMAGINE_PAGE = "https://trantor.codelink.io/blog/post/a-imagine-pioneering-hyperrealistic-ai-image-generation";
+    public static String B2B_COMPANIES_PAGE = "https://trantor.codelink.io/blog/post/top-b2b-in-vietnam-for-2021";
+
 }
