@@ -3,7 +3,7 @@
 <suite name="Codelink Website Automation Test">
     <!-- Global parameter	-->
     <parameter name="ENVIRONMENT" value="STAGING"/>
-    <parameter name="BROWSER" value="EDGE"/>
+    <parameter name="BROWSER" value="CHROME"/>
 
     <listeners>
         <listener class-name="listeners.ExtentTestListener"/>

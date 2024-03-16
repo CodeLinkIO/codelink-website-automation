@@ -17,7 +17,11 @@
     "LocationsPage": "https://${EnvironmentPrefix}codelink.io/locations",
     "PlaybookPage": "https://${EnvironmentPrefix}codelink.io/our-playbook",
     "BlogPage": "https://${EnvironmentPrefix}codelink.io/blog",
-    "CareersPage": "https://apply.workable.com/codelink/?lng=en"
+    "CareersPage": "https://apply.workable.com/codelink/?lng=en",
+    "HoChiMinhOfficePage": "https://trantor.codelink.io/locations?index=0",
+    "TorontoOfficePage": "https://trantor.codelink.io/locations?index=1",
+    "HaNoiOfficePage": "https://trantor.codelink.io/locations?index=2",
+    "DaNangOfficePage": "https://trantor.codelink.io/locations?index=3"
   },
   "Email": "cl-site-stg-automation@codelink.io"
 }
