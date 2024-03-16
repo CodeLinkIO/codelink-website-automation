@@ -1,0 +1,23 @@
+{
+  "URLs": {
+    "StagingHomePage": "http://${EnvironmentPrefix}codelink.io/",
+    "ProHomePage": "http://codelink.io/",
+    "ArtificialIntelligencePage": "https://${EnvironmentPrefix}codelink.io/services/ai-ml",
+    "SoftwareDevelopmentPage":"https://${EnvironmentPrefix}codelink.io/services/software-development",
+    "EmbeddedTeamPage": "https://${EnvironmentPrefix}codelink.io/services/embedded-teams",
+    "StartUpGrowthPage": "https://${EnvironmentPrefix}codelink.io/services/start-up-growth",
+    "Web3Page": "https://${EnvironmentPrefix}codelink.io/industries/web3",
+    "LogisticsPage": "https://${EnvironmentPrefix}codelink.io/industries/logistics",
+    "HealthTechPage": "https://${EnvironmentPrefix}codelink.io/industries/health-tech",
+    "FintechPage": "https://${EnvironmentPrefix}codelink.io/industries/fin-tech",
+    "EducationPage": "https://${EnvironmentPrefix}codelink.io/industries/education",
+    "CommunicationAndMediaPage": "https://${EnvironmentPrefix}codelink.io/industries/communication-and-media",
+    "OurCompanyPage": "https://${EnvironmentPrefix}codelink.io/our-company",
+    "OurTeamPage": "https://${EnvironmentPrefix}codelink.io/our-team",
+    "LocationsPage": "https://${EnvironmentPrefix}codelink.io/locations",
+    "PlaybookPage": "https://${EnvironmentPrefix}codelink.io/our-playbook",
+    "BlogPage": "https://${EnvironmentPrefix}codelink.io/blog",
+    "CareersPage": "https://apply.workable.com/codelink/?lng=en"
+  },
+  "Email": "cl-site-stg-automation@codelink.io"
+}
